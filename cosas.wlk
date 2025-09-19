@@ -27,6 +27,10 @@ object knightRider {
 	method pesaEntre(minimo,maximo){
 		return (minimo < self.peso()) and (maximo > self.peso())
 	}
+
+	method cantBultos(){
+		return 1
+	}
 }
 
 object arenaAGranel {
@@ -55,6 +59,10 @@ object arenaAGranel {
 
 	method pesaEntre(minimo,maximo){
 		return (minimo < self.peso()) and (maximo > self.peso())
+	}
+
+	method cantBultos(){
+		return 1
 	}
 }
 
@@ -92,6 +100,10 @@ object bumblebee {
 	method pesaEntre(minimo,maximo){
 		return (minimo < self.peso()) and (maximo > self.peso())
 	}
+
+	method cantBultos(){
+		return 2
+	}
 }
 
 object paqueteLadrillos {
@@ -124,6 +136,16 @@ object paqueteLadrillos {
 
 	method pesaEntre(minimo,maximo){
 		return (minimo < self.peso()) and (maximo > self.peso())
+	}
+
+	method cantBultos(){
+		if(cantLadrillos <= 100){
+			return 1
+		} else if(cantLadrillos <= 300){
+			return 2
+		} else {
+			return 3
+		}
 	}
 }
 
@@ -165,6 +187,14 @@ object bateriaAntiaerea{
 	method pesaEntre(minimo,maximo){
 		return (minimo < self.peso()) and (maximo > self.peso())
 	}
+
+	method cantBultos(){
+		if(not self.tieneMisiles()){
+			return 1
+		}else {
+			return 2
+		}
+	}
 }
 
 
@@ -193,6 +223,9 @@ object residuosRadioactivos {
 
 	method pesaEntre(minimo,maximo){
 		return (minimo < self.peso()) and (maximo > self.peso())
+	}
+	method cantBultos(){
+		return 1
 	}
 }
 
@@ -251,6 +284,18 @@ object contenedorPortuario{
 	method pesaEntre(minimo,maximo){
 		return (minimo < self.peso()) and (maximo > self.peso())
 	}
+
+	method cantBultos(){
+		return 1 + self.cantBultosDeCosasQueTiene()
+	}
+
+	method cantBultosDeCosasQueTiene(){
+		return self.bultosDeCosasQueTiene().sum()
+	}
+
+	method bultosDeCosasQueTiene(){
+		return cosas.map({cosa => cosa.cantBultos()})
+	}
 }
 
 object embalaje{
@@ -282,6 +327,10 @@ object embalaje{
 
 	method pesaEntre(minimo,maximo){
 		return (minimo < self.peso()) and (maximo > self.peso())
+	}
+
+	method cantBultos(){
+		return 2
 	}
 }
 

@@ -143,6 +143,61 @@ describe "Camión de transporte"{
         assert.that(camion.tieneAlgoQuePeseEntre(5,1000))
         assert.notThat(camion.tieneAlgoQuePeseEntre(900,1000))
     }
+
+    // LA COSA MÁS PESADA
+
+    test "Camion cargado con bumblebee y 300 ladrillos devuelve lo más pesado bumblebee"{
+        camion.cargar(bumblebee)
+        paqueteLadrillos.cantLadrillos(300)
+        camion.cargar(paqueteLadrillos)
+        assert.equals(bumblebee,camion.laCosaMasPesada())
+    }
+
+    test "Validar camión vacio cuando se le pide la cosa más pesada"{
+        assert.throwsException({camion.laCosaMasPesada()})
+    }
+
+    // PESO DE LAS COSAS DEL CAMIÓN
+    //PREGUNTAR PORQUE PASA A LISTA SI ESTOY TRABAJANDO CON SET
+    test "Camion con bumblebee y 300 ladrillos devuelve peso 800 y 600"{
+        camion.cargar(bumblebee)
+        paqueteLadrillos.cantLadrillos(300)
+        camion.cargar(paqueteLadrillos)
+        assert.equals([800,600],camion.pesoDeCosas())
+    }
+
+    // BULTOS
+
+    test "CASO 1: Cantidad de bultos es de 9"{
+        camion.cargar(knightRider)
+        camion.cargar(bumblebee)
+        embalaje.envuelve(residuosRadioactivos)
+        camion.cargar(embalaje)
+        camion.cargar(residuosRadioactivos)
+        camion.cargar(arenaAGranel)
+        paqueteLadrillos.cantLadrillos(50)
+        camion.cargar(paqueteLadrillos)
+        bateriaAntiaerea.tieneMisiles(false)
+        camion.cargar(bateriaAntiaerea)
+        assert.equals(9,camion.totalBultosQueTransporta())
+    }
+
+    test "CASO 2 :Cantidad de bultos es de 5"{
+        paqueteLadrillos.cantLadrillos(150)
+        camion.cargar(paqueteLadrillos)
+        camion.cargar(bateriaAntiaerea)
+        camion.cargar(contenedorPortuario)
+        assert.equals(5,camion.totalBultosQueTransporta())
+    }
+
+    test "CASO 3:Cantidad de bultos es de 4"{
+        paqueteLadrillos.cantLadrillos(350)
+        camion.cargar(paqueteLadrillos)
+        camion.cargar(arenaAGranel)
+        assert.equals(4,camion.totalBultosQueTransporta())
+    }
+
+    
 }
 
 

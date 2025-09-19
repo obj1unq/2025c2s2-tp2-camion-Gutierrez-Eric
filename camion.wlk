@@ -80,6 +80,25 @@ object camion {
 		return cosas.any({cosa => cosa.pesaEntre(minimo,maximo)})
 	}
 
+	method laCosaMasPesada(){
+		return cosas.find({cosa => cosa.pesaIgual(self.mayorPesoDeCosas())})
+	}
+
+	method pesoDeCosas(){
+		return cosas.map({cosa => cosa.peso()})
+	}
+
+	method mayorPesoDeCosas(){
+		return self.pesoDeCosas().max()
+	}
+
+	method totalBultosQueTransporta(){
+		return self.bultos().sum()
+	}
+	method bultos(){
+		return cosas.map({cosa => cosa.cantBultos()})
+	}
+
 }
 
 
