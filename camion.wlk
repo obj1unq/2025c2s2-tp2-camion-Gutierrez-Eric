@@ -1,4 +1,5 @@
 import cosas.*
+import almacen.*
 
 object camion {
 	const property cosas = #{}
@@ -99,6 +100,9 @@ object camion {
 		return cosas.map({cosa => cosa.cantBultos()})
 	}
 
+	method sufreAccidente(){
+		cosas.forEach({cosa => cosa.efectoAccidente()})
+	}
 }
 
 

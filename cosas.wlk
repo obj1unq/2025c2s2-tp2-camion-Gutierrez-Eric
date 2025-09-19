@@ -31,6 +31,10 @@ object knightRider {
 	method cantBultos(){
 		return 1
 	}
+
+	method efectoAccidente(){
+		
+	}
 }
 
 object arenaAGranel {
@@ -63,6 +67,10 @@ object arenaAGranel {
 
 	method cantBultos(){
 		return 1
+	}
+
+	method efectoAccidente(){
+		peso = peso + 20
 	}
 }
 
@@ -103,6 +111,10 @@ object bumblebee {
 
 	method cantBultos(){
 		return 2
+	}
+
+	method efectoAccidente(){
+		estaTransformadoAuto = not estaTransformadoAuto
 	}
 }
 
@@ -145,6 +157,14 @@ object paqueteLadrillos {
 			return 2
 		} else {
 			return 3
+		}
+	}
+
+	method efectoAccidente(){
+		if(cantLadrillos>12){
+			cantLadrillos = cantLadrillos - 12
+		}else {
+			cantLadrillos = 0
 		}
 	}
 }
@@ -195,6 +215,10 @@ object bateriaAntiaerea{
 			return 2
 		}
 	}
+
+	method efectoAccidente(){
+		tieneMisiles = false
+	}
 }
 
 
@@ -226,6 +250,10 @@ object residuosRadioactivos {
 	}
 	method cantBultos(){
 		return 1
+	}
+
+	method efectoAccidente(){
+		peso = peso + 15
 	}
 }
 
@@ -296,6 +324,10 @@ object contenedorPortuario{
 	method bultosDeCosasQueTiene(){
 		return cosas.map({cosa => cosa.cantBultos()})
 	}
+
+	method efectoAccidente(){
+		cosas.forEach({cosa => cosa.efectoAccidente()})
+	}
 }
 
 object embalaje{
@@ -331,6 +363,10 @@ object embalaje{
 
 	method cantBultos(){
 		return 2
+	}
+
+	method efectoAccidente(){
+
 	}
 }
 

@@ -196,9 +196,58 @@ describe "Camión de transporte"{
         camion.cargar(arenaAGranel)
         assert.equals(4,camion.totalBultosQueTransporta())
     }
-
-    
 }
+
+    // ACCIDENTE
+
+    describe "CASO 1:Accidente"{
+  
+   method initialize(){
+        camion.cargar(knightRider)
+        bumblebee.estaTransformadoAuto(true)
+        camion.cargar(bumblebee)
+        camion.cargar(embalaje)
+        residuosRadioactivos.peso(30)
+        camion.cargar(residuosRadioactivos)
+        arenaAGranel.peso(50)
+        camion.cargar(arenaAGranel)
+        paqueteLadrillos.cantLadrillos(100)
+        camion.cargar(paqueteLadrillos)
+        bateriaAntiaerea.tieneMisiles(true)
+        camion.cargar(bateriaAntiaerea)
+    }
+
+    test"Camion accidente caso 1"{
+        camion.sufreAccidente()
+        assert.notThat(bumblebee.estaTransformadoAuto())
+        assert.equals(45,residuosRadioactivos.peso())
+        assert.equals(70,arenaAGranel.peso())
+        assert.equals(88,paqueteLadrillos.cantLadrillos())
+        assert.notThat(bateriaAntiaerea.tieneMisiles())
+    }
+}
+
+    describe "CASO 2:Accidente" {
+        
+        method initialize(){
+            bumblebee.estaTransformadoAuto(false)
+            camion.cargar(bumblebee)
+            residuosRadioactivos.peso(30)
+            camion.cargar(residuosRadioactivos)
+            paqueteLadrillos.cantLadrillos(10)
+            camion.cargar(paqueteLadrillos)
+            bateriaAntiaerea.tieneMisiles(false)
+            camion.cargar(bateriaAntiaerea)
+        }
+
+        test "Camión accidente caso 2"{
+            camion.sufreAccidente()
+            assert.that(bumblebee.estaTransformadoAuto())
+            assert.equals(45,residuosRadioactivos.peso())
+            assert.equals(0,paqueteLadrillos.cantLadrillos())
+            assert.notThat(bateriaAntiaerea.tieneMisiles())
+        }
+    }
 
 
 
