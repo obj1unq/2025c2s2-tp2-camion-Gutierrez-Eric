@@ -1,0 +1,105 @@
+import cosas.*
+import camion.*
+
+
+// ¿Los throwsException seria mejor trabajarlos aparte?
+
+describe "Camión de transporte"{
+    
+    // CARGA/DESCARGA DE COSAS EN CAMIÓN
+
+    test "Carga/descarga de camión"{
+        camion.cargar(bumblebee)
+        assert.equals(#{bumblebee},camion.cosas())
+        camion.cargar(knightRider)
+        assert.equals(#{bumblebee,knightRider},camion.cosas())
+        camion.descargar(bumblebee)
+        assert.equals(#{knightRider},camion.cosas())
+        assert.throwsException({camion.cargar(knightRider)})
+        assert.throwsException({camion.descargar(bumblebee)})
+    }
+
+    // ALGUNA COSA EN CAMIÓN CON PESO PAR/IMPAR
+
+    test "Todos los objetos pesan par"{
+        camion.cargar(bumblebee)
+        arenaAGranel.peso(50)
+        camion.cargar(arenaAGranel)
+        assert.equals(#{bumblebee,arenaAGranel},camion.cosas())
+        assert.that(camion.pesoDeCosasPar())
+    }
+
+    test"Algun objeto en el camion pesa impar"{
+         camion.cargar(bumblebee)
+        arenaAGranel.peso(51)
+        camion.cargar(arenaAGranel)
+        assert.equals(#{bumblebee,arenaAGranel},camion.cosas())
+        assert.notThat(camion.pesoDeCosasPar())
+    }
+
+    // ALGUNA COSA TIENE UN PESO EN ESPECIFICO
+
+    test "Algun objeto en camion cumple con el peso"{
+        camion.cargar(bumblebee)
+        arenaAGranel.peso(50)
+        camion.cargar(arenaAGranel)
+        assert.that(camion.tieneCosaConPeso(50))
+        assert.that(camion.tieneCosaConPeso(800))
+        assert.notThat(camion.tieneCosaConPeso(500))
+    }
+
+    //LIMITE PESO CAMIÓN
+
+    test "Camion no excede limite de peso"{
+        camion.cargar(bumblebee)
+        paqueteLadrillos.cantLadrillos(300)
+        camion.cargar(paqueteLadrillos)
+        assert.equals(2400, camion.pesoTotalCamion())
+        assert.notThat(camion.estaExcedidoDePeso())
+    }
+    
+    test "Camion excede limite de peso"{
+        camion.cargar(bumblebee)
+        paqueteLadrillos.cantLadrillos(400)
+        camion.cargar(paqueteLadrillos)
+        assert.equals(2600, camion.pesoTotalCamion())
+        assert.that(camion.estaExcedidoDePeso())
+    }
+
+    //NIVEL PELIGROSIDAD
+
+    test "Cosa cargada con nivel peligrosidad" {
+        
+        bumblebee.estaTransformadoAuto(true)
+        camion.cargar(bumblebee)
+        bateriaAntiaerea.tieneMisiles(false)
+        camion.cargar(bateriaAntiaerea)
+        camion.cargar(residuosRadioactivos)
+        assert.equals(bateriaAntiaerea,camion.algoCargadoConPeligrosidad(0))
+        assert.equals(bumblebee,camion.algoCargadoConPeligrosidad(15))
+        assert.equals(residuosRadioactivos,camion.algoCargadoConPeligrosidad(200))
+        assert.throwsException({ camion.algoCargadoConPeligrosidad(30)})
+        bumblebee.estaTransformadoAuto(false)
+        assert.equals(bumblebee,camion.algoCargadoConPeligrosidad(30))
+        bateriaAntiaerea.tieneMisiles(true)
+        assert.equals(bateriaAntiaerea,camion.algoCargadoConPeligrosidad(100))
+    }
+
+    //COSAS QUE SUPEREN NIVEL PELIGROSIDAD
+    //ERROR DE ENUNCIADO DICE BATERIA DESCARGADA,PERO SI LA DESCARGO LOS OTROS TEST QUEDAN MAL
+    test "Cosas cargadas que superen el nivel de peligrosidad dado"{
+        camion.cargar(knightRider)
+        bateriaAntiaerea.tieneMisiles(true)
+        camion.cargar(bateriaAntiaerea)
+        assert.equals(#{bateriaAntiaerea},camion.cargaConMasPeligrosidad(15))
+        assert.equals(#{bateriaAntiaerea},camion.cargaConMasPeligrosidad(bumblebee.nivelPeligrosidad()))
+        assert.equals(#{knightRider,bateriaAntiaerea},camion.cargaConMasPeligrosidad(2))
+        assert.equals(#{knightRider,bateriaAntiaerea},camion.cargaConMasPeligrosidad(paqueteLadrillos.nivelPeligrosidad()))
+        assert.equals(#{},camion.cargaConMasPeligrosidad(200))
+        assert.equals(#{},camion.cargaConMasPeligrosidad(residuosRadioactivos.nivelPeligrosidad()))
+    }
+}
+
+
+
+
