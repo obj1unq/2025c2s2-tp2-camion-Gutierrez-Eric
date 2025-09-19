@@ -98,6 +98,51 @@ describe "Camión de transporte"{
         assert.equals(#{},camion.cargaConMasPeligrosidad(200))
         assert.equals(#{},camion.cargaConMasPeligrosidad(residuosRadioactivos.nivelPeligrosidad()))
     }
+
+    //CAMION CIRCULA EN RUTA
+
+    test "Camion puede circular en ruta con cierta peligrosidad"{
+        bumblebee.estaTransformadoAuto(true)
+        paqueteLadrillos.cantLadrillos(300)
+        camion.cargar(bumblebee)
+        camion.cargar(paqueteLadrillos)
+        assert.that(camion.puedeCircularRutaConLimitePeligrosidad(20))
+        paqueteLadrillos.cantLadrillos(400)
+        assert.notThat(camion.puedeCircularRutaConLimitePeligrosidad(20))
+        paqueteLadrillos.cantLadrillos(300)
+        bumblebee.estaTransformadoAuto(false)
+        assert.notThat(camion.puedeCircularRutaConLimitePeligrosidad(20))
+    }
+
+    // CONTENEDOR Y EMBALAJE
+
+    test "ContenedorPortuario con cosas y embalaje"{
+        assert.equals(100,contenedorPortuario.peso())
+        assert.equals(0, contenedorPortuario.nivelPeligrosidad())
+        contenedorPortuario.cargarCosas(knightRider)
+        arenaAGranel.peso(50)
+        contenedorPortuario.cargarCosas(arenaAGranel)
+        assert.equals(650,contenedorPortuario.peso())
+        assert.equals(10, contenedorPortuario.nivelPeligrosidad())
+        embalaje.envuelve(knightRider)
+        assert.equals(500, embalaje.peso())
+        assert.equals(5,embalaje.nivelPeligrosidad())
+        bumblebee.estaTransformadoAuto(true)
+        embalaje.envuelve(bumblebee)
+        assert.equals(800,embalaje.peso())
+        assert.equals(7.5, embalaje.nivelPeligrosidad())
+    }
+
+    // CAMION CON ALGO QUE PESE ENTRE MINIMO Y MAXIMO
+
+    test"Camion con bumbeblee y ladrillos tiene algo que pese entre minimo y maximo"{
+        camion.cargar(bumblebee)
+        paqueteLadrillos.cantLadrillos(300)
+        camion.cargar(paqueteLadrillos)
+        assert.notThat(camion.tieneAlgoQuePeseEntre(5,100))
+        assert.that(camion.tieneAlgoQuePeseEntre(5,1000))
+        assert.notThat(camion.tieneAlgoQuePeseEntre(900,1000))
+    }
 }
 
 

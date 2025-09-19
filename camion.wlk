@@ -59,8 +59,27 @@ object camion {
 		return cosas.filter({cosa => cosa.tieneMasPeligrosidad(nivelPeligrosidad)})
 	}
 
+	// En este caso al usar el not me toma <= (Nose si a esto se referia con el tip dado)
 	method cargaConMenosPeligrosidad(nivelPeligrosidad){
 		return cosas.filter({cosa => not (cosa.tieneMasPeligrosidad(nivelPeligrosidad))})
 	}
+
+	method nivelPeligrosidadCarga(){
+		return cosas.sum({cosa => cosa.nivelPeligrosidad()})
+	}
+
+	method puedeCircularRutaConLimitePeligrosidad(nivelPeligrosidad){
+		return not self.estaExcedidoDePeso() and not self.superaLimitePeligrosidad(nivelPeligrosidad)
+	}
+
+	method superaLimitePeligrosidad(nivelPeligrosidad){
+		return self.nivelPeligrosidadCarga() > nivelPeligrosidad
+	}
+
+	method tieneAlgoQuePeseEntre(minimo,maximo){
+		return cosas.any({cosa => cosa.pesaEntre(minimo,maximo)})
+	}
+
 }
+
 
