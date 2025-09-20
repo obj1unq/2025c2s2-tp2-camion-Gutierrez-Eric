@@ -258,7 +258,7 @@ object residuosRadioactivos {
 }
 
 object contenedorPortuario{
-	const property cosas = []
+	const property cosas = #{}
 	const property pesoBase = 100
 
 	method peso(){

@@ -1,5 +1,6 @@
 import cosas.*
 import almacen.*
+import ruta.*
 
 object camion {
 	const property cosas = #{}
@@ -102,6 +103,26 @@ object camion {
 
 	method sufreAccidente(){
 		cosas.forEach({cosa => cosa.efectoAccidente()})
+	}
+
+	method transportar(destino,camino){
+		self.validarViajeA(camino)
+		self.transportaA(destino)
+	}
+
+	method validarViajeA(camino){
+		if(not self.puedeViajarA(camino)){
+			self.error ("No cumple con condiciones para viajar por" + camino)
+		}
+
+	}
+	method puedeViajarA(camino){
+		return camino.puedeCircular(self)
+	}
+
+	method transportaA(almacen){
+		almacen.descargaDe(cosas)
+		cosas.clear()
 	}
 }
 
